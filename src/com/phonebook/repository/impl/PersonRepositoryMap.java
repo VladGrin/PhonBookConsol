@@ -60,16 +60,6 @@ public class PersonRepositoryMap implements PersonRepository {
         return true;
     }
 
-    public static void test(){
-        String str = "Tom";
-        for (int i = 0; i < personMap.size(); i++) {
-            if (personMap.get(i).getSurname().equals(str))
-                System.out.println(personMap.get(i).getPhoneNumber());
-            if (personMap.get(i).getPhoneNumber().equals("20"))
-                System.out.println(personMap.get(i).getSurname());
-        }
-    }
-
     public static void size(){
         System.out.println(personMap.size());;
     }
