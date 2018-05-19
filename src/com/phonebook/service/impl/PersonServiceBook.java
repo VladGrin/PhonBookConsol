@@ -3,11 +3,12 @@ package com.phonebook.service.impl;
 import com.phonebook.model.Person;
 import com.phonebook.repository.PersonRepository;
 import com.phonebook.repository.impl.PersonRepositoryImpl;
+import com.phonebook.repository.impl.PersonRepositoryMap;
 import com.phonebook.service.PersonService;
 
 public class PersonServiceBook implements PersonService {
 
-    PersonRepository personRepository = new PersonRepositoryImpl();
+    PersonRepository personRepository = new PersonRepositoryImpl();//new PersonRepositoryMap();
 
     @Override
     public boolean createPerson(Person person) {

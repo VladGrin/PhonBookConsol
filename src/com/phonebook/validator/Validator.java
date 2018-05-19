@@ -21,7 +21,7 @@ public class Validator {
     }
 
     public static boolean phoneNumberValidation(String str) throws IncorrectInputException {
-        regexPattern = Pattern.compile("^\\+[0-9]{2,3}+-[0-9]{10}$");
+        regexPattern = Pattern.compile("^\\+38[0-9]{9,11}$");
         regMatcher   = regexPattern.matcher(str);
         if(regMatcher.matches()) {
             return true;

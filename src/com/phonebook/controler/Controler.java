@@ -56,20 +56,20 @@ public class Controler {
     }
 
     public boolean updatePersonById() {
-        String firstName = null, lastName = null, idString = null;
+        String surame = null, phoneNumber = null, idString = null;
         int id;
         try {
             System.out.print("Input id : ");
             Validator.idValidation(idString = data.nextLine());
-            System.out.print("Input new first name : ");
-            firstName = data.nextLine();
-            System.out.print("Input new last name : ");
-            lastName = data.nextLine();
+            System.out.print("Input new surname : ");
+            surame = data.nextLine();
+            System.out.print("Input new phone numberv: ");
+            phoneNumber = data.nextLine();
         } catch (IncorrectInputException e) {
             System.out.println(e.getMessage());
             return false;
         }
-        return book.updatePerson(new Person(Integer.parseInt(idString), firstName, lastName));
+        return book.updatePerson(new Person(Integer.parseInt(idString), surame, phoneNumber));
     }
 
 
