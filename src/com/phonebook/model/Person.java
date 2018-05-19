@@ -1,10 +1,15 @@
 package com.phonebook.model;
 
 public class Person {
-    private int id;
+    private int id = 0;
     private String surname;
     private String phoneNumber;
 
+    public Person(int id, String surname, String phoneNumber) {
+        this.id = id;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+    }
     public Person(String surname, String phoneNumber) {
         this.surname = surname;
         this.phoneNumber = phoneNumber;
@@ -36,6 +41,6 @@ public class Person {
 
     @Override
     public String toString() {
-       return surname + " " + phoneNumber;
+        return surname + " " + phoneNumber;
     }
 }

@@ -1,80 +1,41 @@
 package com.phonebook.service.impl;
 
-import com.phonebook.exception.IncorrectInputException;
-import com.phonebook.filehandling.fileHandling;
 import com.phonebook.model.Person;
 import com.phonebook.repository.PersonRepository;
-import com.phonebook.repository.impl.PersonRepositoryMap;
-import com.phonebook.validator.Validator;
+import com.phonebook.repository.impl.PersonRepositoryImpl;
+import com.phonebook.service.PersonService;
 
-import java.util.List;
-import java.util.Scanner;
+public class PersonServiceBook implements PersonService {
 
-public class PersonServiceBook {
+    PersonRepository personRepository = new PersonRepositoryImpl();
 
-    private static PersonRepository book = new PersonRepositoryMap();
-
-    public static void dataInit(){
-        book = fileHandling.readFromFile();
+    @Override
+    public boolean createPerson(Person person) {
+        return personRepository.createPerson(person);
     }
 
-    public static void start()throws IncorrectInputException {
-        char choice;
-        dataInit();
-        while (true){
-            Scanner read = new Scanner(System.in);
-            System.out.println("");
-            System.out.println("Make your choice");
-            System.out.println("To add a subscriber, press '1'");
-            System.out.println("To search for a number by surname, press '2'");
-            System.out.println("To search for a person by number, press '3'");
-            System.out.println("Press '0' to enter");
-            String data = read.nextLine();
-            choice = data.charAt(0);
-            if (choice != '0' && choice != '1' && choice != '2' && choice != '3')
-                throw new IncorrectInputException("Incorrectly Input");
-            if (choice == '0') break;
-            if (choice == '1') inputData();
-            if (choice == '2') outputPhoneNumber();
-            if (choice == '3') outputSurname();
-            System.out.println("");
-        }
+    @Override
+    public String showAllPerson() {
+        return personRepository.showAllPerson();
     }
 
-    private static void inputData() throws IncorrectInputException {
-        Scanner read = new Scanner(System.in);
-        System.out.print("Input surname : ");
-        String data = read.nextLine();
-        if ( !Validator.nameSurnameValidation(data) )
-            throw new IncorrectInputException("Error input data");
-        String surname = data;
-        System.out.print("Input phone number : ");
-        data = read.nextLine();
-        if ( !Validator.phoneNumberValidation(data) )
-            throw new IncorrectInputException("Error input data");
-        String phoneNumber = data;
-        Person person = new Person(surname, phoneNumber);
-        fileHandling.writeToFile(person);
-        System.out.println(book.create(person));
+    @Override
+    public String showNumberByName(String name) {
+        return personRepository.showNumberByName(name);
     }
 
-    private static void outputPhoneNumber() throws IncorrectInputException {
-        Scanner read = new Scanner(System.in);
-        System.out.print("Input surname : ");
-        String data = read.nextLine();
-        if ( !Validator.nameSurnameValidation(data) )
-            throw new IncorrectInputException("Error input data");
-        String phoneNumber = book.outputPhoneNumber(data);
-        System.out.println(data + " : " + phoneNumber);
+    @Override
+    public String showPersonByNumber(String number) {
+        return personRepository.showPersonByNumber(number);
     }
 
-    private static void outputSurname() throws IncorrectInputException {
-        Scanner read = new Scanner(System.in);
-        System.out.print("Input phone number : ");
-        String data = read.nextLine();
-        if ( !Validator.phoneNumberValidation(data) )
-            throw new IncorrectInputException("Error input data");
-        String surname = book.outputSurname(data);
-        System.out.println(data + " : " + surname);
+    @Override
+    public boolean updatePerson(Person person) {
+        return personRepository.updatePerson(person);
+    }
+
+    @Override
+    public boolean deleteById(int id) {
+        return personRepository.deleteById(id);
     }
 }

@@ -2,49 +2,41 @@ package com.phonebook.validator;
 
 import com.phonebook.exception.IncorrectInputException;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Validator {
 
-    public static boolean nameSurnameValidation(String string) throws IncorrectInputException {
-        int count = 0;
-        int flag;
-        char[] letters = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s'
-                ,'t','u','v','w','x','y','z','A','B','C','D','I','F','G','H','I','J','K','L','M','N','O','P','Q','R','S'
-                ,'T','U','V','W','X','Y','Z','-'};
-        for (int i = 0; i < string.length(); i++){
-            flag = 0;
-            for (char letter : letters){
-                if ( string.charAt(i) == letter ){
-                    flag = 1;
-                    break;
-                }
-            }
-            count++;
-            if (flag != 1)
-                throw new IncorrectInputException("Incorrectly input litter");
+    private static Pattern regexPattern;
+    private static Matcher regMatcher;
+
+    public static boolean nameSurnameValidation(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("^[A-ZА-ЯІ][a-z-а-яії]{1,15}",Pattern.UNICODE_CHARACTER_CLASS);
+        regMatcher   = regexPattern.matcher(str);
+        if(regMatcher.matches()) {
+            return true;
+        } else {
+            throw new IncorrectInputException("Incorrectly input Text.");
         }
-        if ( count < 1 || count > 40)
-            throw new IncorrectInputException("Wrong number of letters entered");
-        return true;
     }
 
-    public static boolean phoneNumberValidation(String string) throws IncorrectInputException {
-        int flag;
-        int count = 0;
-        char[] numbers = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        for (int i = 0; i < string.length(); i++){
-            flag = 0;
-            for (char number : numbers){
-                if ( string.charAt(i) == number ){
-                    flag = 1;
-                    break;
-                }
-            }
-            count++;
-            if (flag != 1)
-                throw new IncorrectInputException("Incorrectly input number");
+    public static boolean phoneNumberValidation(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("^\\+[0-9]{2,3}+-[0-9]{10}$");
+        regMatcher   = regexPattern.matcher(str);
+        if(regMatcher.matches()) {
+            return true;
+        } else {
+            throw new IncorrectInputException("Incorrectly input mobile number");
         }
-        if ( count < 11 || count > 12)
-            throw new IncorrectInputException("Incorrect number of digits entered");
-        return true;
+    }
+
+    public static boolean idValidation(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("^[0-9]{1,10}$");
+        regMatcher   = regexPattern.matcher(str);
+        if(regMatcher.matches()) {
+            return true;
+        } else {
+            throw new IncorrectInputException("Incorrectly input id");
+        }
     }
 }
