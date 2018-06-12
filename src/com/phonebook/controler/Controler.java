@@ -1,87 +1,87 @@
 package com.phonebook.controler;
 
+import com.phonebook.exception.DataAlreadyExistsException;
 import com.phonebook.exception.IncorrectInputException;
-import com.phonebook.model.Person;
+import com.phonebook.exception.NoSuchDataException;
+import com.phonebook.service.PersonService;
 import com.phonebook.service.impl.PersonServiceBook;
-import com.phonebook.validator.Validator;
 
 import java.util.Scanner;
 
 public class Controler {
 
     private Scanner data = new Scanner(System.in);
-    private PersonServiceBook book = new PersonServiceBook();
+    private PersonService personService  = new PersonServiceBook();
 
-    public boolean addPerson() {
-        String name = null;
-        String phoneNumber = null;
+    public String addPerson(String surname,String phoneNumber) {
         try {
-            System.out.print("Input surname : ");
-            Validator.nameSurnameValidation(name = data.nextLine());
-            System.out.print("Input phone number : ");
-            Validator.phoneNumberValidation(phoneNumber = data.nextLine());
+            personService.createPerson(surname, phoneNumber);
+            return "The record is successful";
         } catch (IncorrectInputException e) {
-            System.out.println(e.getMessage());
-            return false;
+            return e.getMessage();
+        } catch (DataAlreadyExistsException e) {
+            return e.getMessage();
         }
-        return book.createPerson(new Person(name, phoneNumber));
     }
 
     public String showAll() {
-        return book.showAllPerson();
+        try {
+            return personService.showAllPerson();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
+        }
     }
 
-    public String showByName() {
-        String name = null;
+    public String showByName(String name) {
         try {
-            System.out.print("Input surname : ");
-            Validator.nameSurnameValidation(name = data.nextLine());
+            return personService.showNumberByName(name);
         } catch (IncorrectInputException e) {
-            System.out.println(e.getMessage());
-            return "Wrong name";
+            return e.getMessage();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
         }
-        return book.showNumberByName(name);
     }
 
-    public String showByNumber() {
-        String phoneNumber = null;
+    public String showByNumber(String phoneNumber) {
         try {
-            System.out.print("Input phone number : ");
-            Validator.phoneNumberValidation(phoneNumber = data.nextLine());
+            return personService.showPersonByNumber(phoneNumber);
         } catch (IncorrectInputException e) {
-            System.out.println(e.getMessage());
-            return "Wrong phone number";
+            return e.getMessage();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
         }
-        return book.showPersonByNumber(phoneNumber);
     }
 
-    public boolean updatePersonById() {
-        String surame = null, phoneNumber = null, idString = null;
-        int id;
+    public String updatePersonById(String id, String surname, String phoneNumber) {
         try {
-            System.out.print("Input id : ");
-            Validator.idValidation(idString = data.nextLine());
-            System.out.print("Input new surname : ");
-            surame = data.nextLine();
-            System.out.print("Input new phone numberv: ");
-            phoneNumber = data.nextLine();
+            personService.updatePerson(id, surname, phoneNumber);
+            return "The update is successful";
         } catch (IncorrectInputException e) {
-            System.out.println(e.getMessage());
-            return false;
+            return e.getMessage();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
         }
-        return book.updatePerson(new Person(Integer.parseInt(idString), surame, phoneNumber));
     }
 
 
-    public boolean deleteById() {
-        String idString = null;
+    public String deleteById(String id) {
         try {
-            System.out.print("Input id : ");
-            Validator.idValidation(idString = data.nextLine());
-        }catch (IncorrectInputException e) {
-            System.out.println(e.getMessage());
-            return false;
+            personService.deleteById(id);
+            return "The delete is successful";
+        } catch (IncorrectInputException e) {
+            return e.getMessage();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
         }
-        return book.deleteById(Integer.parseInt(idString));
+    }
+
+    public String findByString(String string){
+        try {
+            return personService.findByString(string);
+        } catch (IncorrectInputException e) {
+            return e.getMessage();
+        } catch (NoSuchDataException e) {
+            return e.getMessage();
+        }
     }
 }

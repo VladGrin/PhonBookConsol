@@ -1,9 +1,9 @@
 package com.phonebook.exception;
 
-public class IncorrectInputException extends Exception {
+public class NoSuchDataException extends Exception {
     private String message;
 
-    public IncorrectInputException(String message) {
+    public NoSuchDataException(String message) {
 
         this.message = message;
     }

@@ -9,11 +9,16 @@ public class PersonRepositoryImpl implements PersonRepository {
 
     @Override
     public boolean createPerson(Person person) {
-        String line = null, lastLine = "";
-        int idLast;
         try {
+            String line = null, lastLine = "";
+            int idLast;
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
             while ((line = bufferedReader.readLine()) != null){
+                lastLine = line;
+                if (lastLine.split(" ")[1].equals(person.getSurname()) &&
+                        lastLine.split(" ")[2].equals(person.getPhoneNumber())) {
+                    return false;
+                }
                 lastLine = line;
             }
             idLast =  (lastLine == "") ?  0 : Integer.parseInt(lastLine.split(" ")[0]);
@@ -27,21 +32,20 @@ public class PersonRepositoryImpl implements PersonRepository {
             bufferedWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-            return false;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return false;
         }
         return true;
     }
 
     @Override
     public String showAllPerson() {
-        String string = "", line;
+        String strings = "";
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
+            String line;
             while ( (line = bufferedReader.readLine()) != null){
-                string += line + "\n" ;
+                strings += line + "\n" ;
             }
             bufferedReader.close();
         } catch (FileNotFoundException e) {
@@ -49,17 +53,17 @@ public class PersonRepositoryImpl implements PersonRepository {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return string;
+        return strings.equals("") ? null : strings;
     }
 
     @Override
     public String showNumberByName(String name) {
-        String string = "", line;
+        String strings = "", line;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
             while ( (line = bufferedReader.readLine()) != null){
                 if(line.split(" ")[1].equals(name)){
-                    string += line + "\n" ;
+                    strings += line + "\n" ;
                 }
             }
             bufferedReader.close();
@@ -68,17 +72,17 @@ public class PersonRepositoryImpl implements PersonRepository {
         }catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return string;
+        return strings.equals("") ? null : strings;
     }
 
     @Override
     public String showPersonByNumber(String number) {
-        String string = "", line;
+        String strings = "", line;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
             while ( (line = bufferedReader.readLine()) != null){
                 if(line.split(" ")[2].equals(number)){
-                    string += line + "\n" ;
+                    strings += line + "\n" ;
                 }
             }
             bufferedReader.close();
@@ -87,23 +91,23 @@ public class PersonRepositoryImpl implements PersonRepository {
         }catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        return string;
+        return strings.equals("") ? null : strings;
     }
 
     @Override
     public boolean updatePerson(Person person) {
         String string = "", line;
         int index = 0;
+        boolean isUpdate = false;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
             while ( (line = bufferedReader.readLine()) != null){
-                if(line.split(" ")[0].equals(String.valueOf(person.getId()))){
+                if(line.split(" ")[0].equals(person.getId())){
+                    isUpdate = true;
                     string += ( index == 0 ) ? person.getId() + " " + person.toString() + "\n" :
                             "\n" + person.getId() + " " + person.toString();
-                    System.out.println("1");
                 } else {
                     string += (index++ == 0) ? line : "\n" + line;
-                    System.out.println("2");
                 }
             }
             bufferedReader.close();
@@ -112,22 +116,22 @@ public class PersonRepositoryImpl implements PersonRepository {
             bufferedWriter.close();
         }catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-            return false;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return false;
         }
-        return true;
+        return isUpdate;
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public boolean deleteById(String id) {
         String string="", line;
+        boolean isDelete = false;
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
             int index = 0;
             while ( (line = bufferedReader.readLine()) != null){
-                if(Integer.parseInt(line.split(" ")[0]) == id){
+                if(line.split(" ")[0].equals(id)){
+                    isDelete = true;
                     continue;
                 }
                 string += (index++ == 0) ? line : "\n" + line;
@@ -138,11 +142,28 @@ public class PersonRepositoryImpl implements PersonRepository {
             bufferedWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
-            return false;
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return false;
         }
-        return true;
+        return isDelete;
+    }
+
+    @Override
+    public String findByString(String string){
+        String strings = "", line;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("datafile.txt"));
+            while ( (line = bufferedReader.readLine()) != null){
+                if( line.split(" ")[1].toLowerCase().contains(string)){
+                    strings += line + "\n" ;
+                }
+            }
+            bufferedReader.close();
+        }catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return strings.equals("") ? null : strings;
     }
 }

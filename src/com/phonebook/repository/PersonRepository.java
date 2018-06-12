@@ -9,5 +9,6 @@ public interface PersonRepository {
     String showNumberByName(String name);
     String showPersonByNumber(String number);
     boolean updatePerson(Person person);
-    boolean deleteById(int id);
+    boolean deleteById(String id);
+    String findByString(String string);
 }

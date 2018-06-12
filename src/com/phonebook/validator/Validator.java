@@ -10,33 +10,24 @@ public class Validator {
     private static Pattern regexPattern;
     private static Matcher regMatcher;
 
-    public static boolean nameSurnameValidation(String str) throws IncorrectInputException {
-        regexPattern = Pattern.compile("^[A-ZА-ЯІ][a-z-а-яії]{1,15}",Pattern.UNICODE_CHARACTER_CLASS);
-        regMatcher   = regexPattern.matcher(str);
-        if(regMatcher.matches()) {
-            return true;
-        } else {
-            throw new IncorrectInputException("Incorrectly input Text.");
+    public static void validateText(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("[A-ZА-ЯІ][a-z-а-яії]{1,15}", Pattern.UNICODE_CHARACTER_CLASS);
+        if (!regexPattern.matcher(str).matches()) {
+            throw new IncorrectInputException("Incorrectly input text");
         }
     }
 
-    public static boolean phoneNumberValidation(String str) throws IncorrectInputException {
-        regexPattern = Pattern.compile("^\\+38[0-9]{9,11}$");
-        regMatcher   = regexPattern.matcher(str);
-        if(regMatcher.matches()) {
-            return true;
-        } else {
-            throw new IncorrectInputException("Incorrectly input mobile number");
+    public static void validateNumber(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("[1-9][0-9]{0,15}", Pattern.UNICODE_CHARACTER_CLASS);
+        if (!regexPattern.matcher(str).matches()) {
+            throw new IncorrectInputException("Incorrectly input number");
         }
     }
 
-    public static boolean idValidation(String str) throws IncorrectInputException {
-        regexPattern = Pattern.compile("^[0-9]{1,10}$");
-        regMatcher   = regexPattern.matcher(str);
-        if(regMatcher.matches()) {
-            return true;
-        } else {
-            throw new IncorrectInputException("Incorrectly input id");
+    public static void validatePhoneNumber(String str) throws IncorrectInputException {
+        regexPattern = Pattern.compile("\\+[1-9][0-9]{0,15}", Pattern.UNICODE_CHARACTER_CLASS);
+        if (!regexPattern.matcher(str).matches()) {
+            throw new IncorrectInputException("Incorrectly input phone number");
         }
     }
 }

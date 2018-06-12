@@ -1,10 +1,9 @@
 package com.phonebook.exception;
 
-public class IncorrectInputException extends Exception {
+public class DataAlreadyExistsException extends Exception {
     private String message;
 
-    public IncorrectInputException(String message) {
-
+    public DataAlreadyExistsException(String message) {
         this.message = message;
     }
 
